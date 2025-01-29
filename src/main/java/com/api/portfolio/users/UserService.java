@@ -10,7 +10,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserModel> obtenerTodos() {
+    public List<UserModel> findAllUsers() {
         return userRepository.findAll();
     }
 
