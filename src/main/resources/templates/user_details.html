@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User details</title>
+</head>
+<body>
+    <h1>User details</h1>
+    <p>User id: <span th:text="${id}"></span></p>
+    <p id="p"></p>
+	<script>
+	let n = 12
+	document.getElementById('p').innerHTML = 'n: ' + n
+	</script>
+</body>
+</html>
