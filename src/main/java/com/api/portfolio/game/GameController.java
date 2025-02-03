@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api")
 public class GameController {
 	
-	@GetMapping("/game/{id}")
-	public String getUSer(@PathVariable("id") Long id, Model model) {
+	@GetMapping("/game")
+	public String getUSer(Model model) {
 		
-		model.addAttribute("id", id);
 		return "game";
 	}
 
