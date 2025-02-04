@@ -92,25 +92,25 @@
         };
 
         shape = [
-            { z: 0.002, x: 0.003, y: -0.002 },
-            { z: -0.002, x: 0.003, y: -0.002 },
-            { z: -0.003, x: 0.003, y: -0.001 },
-            { z: -0.002, x: 0.003, y: -0.000 },
-            { z: 0.002, x: 0.003, y: -0.000 },
-            { z: 0.003, x: 0.003, y: -0.001 },
-            { z: 0.002, x: 0.003, y: -0.002 },
-            { z: 0.001, x: 0.012, y: -0.002 },
-            { z: -0.001, x: 0.012, y: -0.002 },
-            { z: -0.002, x: 0.003, y: -0.002 },
-            { z: -0.005, x: 0, y: -0.002 },
-            { z: -0.001, x: 0.012, y: -0.002 },
-            { z: 0.001, x: 0.012, y: -0.002 },
-            { z: 0.005, x: 0, y: -0.002 },
-            { z: 0.002, x: 0.003, y: -0.002 },
-            { z: 0.001, x: 0.012, y: -0.002 },
-            { z: 0.002, x: 0.003, y: 0.00 },
-            { z: -0.002, x: 0.003, y: 0.00 },
-            { z: -0.001, x: 0.012, y: -0.002 },
+            { z: 2, x: 3, y: -2 },
+            { z: -2, x: 3, y: -2 },
+            { z: -3, x: 3, y: -1 },
+            { z: -2, x: 3, y: -0 },
+            { z: 2, x: 3, y: -0 },
+            { z: 3, x: 3, y: -1 },
+            { z: 2, x: 3, y: -2 },
+            { z: 1, x: 12, y: -2 },
+            { z: -1, x: 12, y: -2 },
+            { z: -2, x: 3, y: -2 },
+            { z: -5, x: 0, y: -2 },
+            { z: -1, x: 12, y: -2 },
+            { z: 1, x: 12, y: -2 },
+            { z: 5, x: 0, y: -2 },
+            { z: 2, x: 3, y: -2 },
+            { z: 1, x: 12, y: -2 },
+            { z: 2, x: 3, y: 0 },
+            { z: -2, x: 3, y: 0 },
+            { z: -1, x: 12, y: -2 },
         ];
 
         position = { x: 0.1, y: 0, z: 0 };
@@ -143,13 +143,13 @@
 
         actionShip(event) {
             switch (event.key) {
-                case 'a': this.rotateYAxis(1); break;
-                case 'd': this.rotateYAxis(-1); break;
-                case 'w': this.rotateZAxis(1); break;
-                case 's': this.rotateZAxis(-1); break;
-                case 'q': this.rotateXAxis(-1); break;
-                case 'e': this.rotateXAxis(1); break;
-                case 'r': this.accelerate(1); break;
+                case 'a': this.rotateYAxis(3); break;
+                case 'd': this.rotateYAxis(-3); break;
+                case 'w': this.rotateZAxis(3); break;
+                case 's': this.rotateZAxis(-3); break;
+                case 'q': this.rotateXAxis(-3); break;
+                case 'e': this.rotateXAxis(3); break;
+                case 'r': this.accelerate(3); break;
                 case 'f': this.break(); break;
                 default: break;
             }
@@ -234,7 +234,7 @@
     
     function drawShip() {
     	for(let i = 0; i<ship.shape.length-1; i++) {
-    		let x1 = ship.shape[i].x*10000+250, x2 = ship.shape[i+1].x*10000+250, y1 = ship.shape[i].y*10000+250, y2 = ship.shape[i+1].y*10000+250
+    		let x1 = ship.shape[i].x*10+250, x2 = ship.shape[i+1].x*10+250, y1 = ship.shape[i].y*10+250, y2 = ship.shape[i+1].y*10+250
     		drawLine(x1, y1, x2, y2)
     	}
     }
