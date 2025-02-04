@@ -92,30 +92,32 @@
         };
 
         shape = [
-            { z: 2, x: 3, y: -2 },
-            { z: -2, x: 3, y: -2 },
-            { z: -3, x: 3, y: -1 },
-            { z: -2, x: 3, y: -0 },
-            { z: 2, x: 3, y: -0 },
-            { z: 3, x: 3, y: -1 },
-            { z: 2, x: 3, y: -2 },
-            { z: 1, x: 12, y: -2 },
-            { z: -1, x: 12, y: -2 },
-            { z: -2, x: 3, y: -2 },
-            { z: -5, x: 0, y: -2 },
-            { z: -1, x: 12, y: -2 },
-            { z: 1, x: 12, y: -2 },
-            { z: 5, x: 0, y: -2 },
-            { z: 2, x: 3, y: -2 },
-            { z: 1, x: 12, y: -2 },
-            { z: 2, x: 3, y: 0 },
-            { z: -2, x: 3, y: 0 },
-            { z: -1, x: 12, y: -2 },
+            { x: -2, z: -3, y: 2 },
+            { x: 2, z: -3, y: 2 },
+            { x: 3, z: -3, y: 1 },
+            { x: 2, z: -3, y: 0 },
+            { x: -2, z: -3, y: 0 },
+            { x: -3, z: -3, y: 1 },
+            { x: -2, z: -3, y: 2 },
+            { x: -1, z: -12, y: 2 },
+            { x: 1, z: -12, y: 2 },
+            { x: 2, z: -3, y: 2 },
+            { x: 5, z: 0, y: 2 },
+            { x: 1, z: -12, y: 2 },
+            { x: -1, z: -12, y: 2 },
+            { x: -5, z: 0, y: 2 },
+            { x: -2, z: -3, y: 2 },
+            { x: -1, z: -12, y: 2 },
+            { x: -2, z: -3, y: 0 },
+            { x: 2, z: -3, y: 0 },
+            { x: 1, z: -12, y: 2 },
         ];
 
+
+		shots = []
         position = { x: 0.1, y: 0, z: 0 };
         velocity = { vx: 0, vy: 0, vz: 0 };
-        direction = { x: 1, y: 0, z: 0 };
+        direction = { x: 0, y: 0, z: -1 };
         view = { x: 0, y: 0, z: 0 };
 
         constructor(data) {
@@ -145,11 +147,12 @@
             switch (event.key) {
                 case 'a': this.rotateYAxis(3); break;
                 case 'd': this.rotateYAxis(-3); break;
-                case 'w': this.rotateZAxis(3); break;
-                case 's': this.rotateZAxis(-3); break;
-                case 'q': this.rotateXAxis(-3); break;
-                case 'e': this.rotateXAxis(3); break;
+                case 'w': this.rotateXAxis(-3); break;
+                case 's': this.rotateXAxis(3); break;
+                case 'q': this.rotateZAxis(-3); break;
+                case 'e': this.rotateZAxis(3); break;
                 case 'r': this.accelerate(3); break;
+                case 'p': this.doShot(); break;
                 case 'f': this.break(); break;
                 default: break;
             }
@@ -221,30 +224,118 @@
                 return this.rotationMatrix(point, this.R)
             })
         }
+        
+        doShot(){
+        	this.shots.push({
+        		x:this.position.x,
+        		y:this.position.y,
+        		z:this.position.z,
+        		vx:this.velocity.vx + this.direction.x*4,
+        		vy:this.velocity.vy + this.direction.y*4,
+        		vz:this.velocity.vz + this.direction.z*4
+        	})
+        	if(this.shots.length > 10){
+        		this.shots.shift()
+        	}
+        }
+        
+        
+        actionShot(){
+        	this.shots = this.shots.map(shot => {
+        		return({
+        			x: shot.x + shot.vx,
+        			y: shot.y + shot.vy,
+        			z: shot.z + shot.vz,
+					vx:shot.vx,
+					vy:shot.vy,
+					vz:shot.vz
+        		})
+        	})
+        }
+    }
+    
+    class Asteroid {
+        position = {x:0, y:0, z:0}
+        velocity = {vx:0, vy:0, vz:0}
+        constructor(){
+        	this.position.x = Math.random()*500
+        	this.position.y = Math.random()*500
+        	this.position.z = Math.random()*500
+        	this.velocity.vx = Math.random()*0.1
+        	this.velocity.vy = Math.random()*0.1
+        	this.velocity.vz = Math.random()*0.1
+        }
+        move(){
+        	this.position.x += this.velocity.vx
+        	this.position.y += this.velocity.vy
+        	this.position.z += this.velocity.vz
+        }
+        
     }
     
     let ship = new Ship()
+    let asteroid = new Asteroid()
+    let asteroids = []
+    console.log(asteroid.position)
 
-    function drawLine(x1, y1, x2, y2) {
+    function drawLine(x1, y1, x2, y2, width = 2) {
       ctx.beginPath();
+  	  ctx.lineWidth = width
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
       ctx.stroke();
     }
     
+    function drawSphere(x,y, size = 2){
+    	ctx.beginPath()
+    	ctx.arc(x,y,size,0,Math.PI*2)
+    	ctx.fillStyle = 'black'
+    	ctx.fill()
+    	ctx.closePath()
+    }
+    
     function drawShip() {
     	for(let i = 0; i<ship.shape.length-1; i++) {
-    		let x1 = ship.shape[i].x*10+250, x2 = ship.shape[i+1].x*10+250, y1 = ship.shape[i].y*10+250, y2 = ship.shape[i+1].y*10+250
+    		let x1 = ship.shape[i].x*5+250, x2 = ship.shape[i+1].x*5+250, y1 = ship.shape[i].y*5+250, y2 = ship.shape[i+1].y*5+250
     		drawLine(x1, y1, x2, y2)
+    	}
+    	for(let i = 0; i<ship.shots.length-1; i++) {
+    		if(ship.shots[i].z > -300){
+    		drawSphere(ship.shots[i].x+250, ship.shots[i].y+250, 3+0.01*ship.shots[i].z)	
+    		}
+    		//drawLine(ship.shots[i].x+250, ship.shots[i].y+250, ship.shots[i].x+ship.shots[i].x*1.1+250, ship.shots[i].y+ship.shots[i].y*1.1+250, 10+0.01*ship.shots[i].z)
     	}
     }
     
-	drawShip();
+    function drawAsteroids(){
+    	for(let i = 0; i<asteroids.length-1; i++) {
+    		drawSphere(asteroids[i].position.x, asteroids[i].position.y, 4)	
+    		
+    	}
+    }
+    
     window.addEventListener("keydown", function(event) {
-    	ctx.clearRect(0, 0, canvas.width, canvas.height);
     	ship = ship.actionShip(event)
+    	ctx.clearRect(0, 0, canvas.width, canvas.height);
     	drawShip()
     });
+    
+    let x=10, y=10
+    function animate(){
+    	ctx.clearRect(0, 0, canvas.width, canvas.height);
+    	drawShip()
+    	drawAsteroids()
+    	ship.actionShot()
+    	if(asteroids.length < 10){
+    		asteroids.push(new Asteroid())
+    	}
+    	asteroids.forEach(asteroid => {
+    		asteroid.move()
+    	})
+    	requestAnimationFrame(animate)
+    }
+    
+    animate()
     
   </script>
 </body>
