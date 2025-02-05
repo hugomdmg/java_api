@@ -1,14 +1,16 @@
 FROM openjdk:17-jdk-slim
 
+RUN apt-get update && apt-get install -y maven
+
 WORKDIR /app
 
 COPY pom.xml .
 
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline
 
 COPY . .
 
-RUN ./mvnw clean install -DskipTests
+RUN mvn clean install -DskipTests
 
 EXPOSE 8080
 
