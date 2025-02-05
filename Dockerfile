@@ -1,7 +1,15 @@
 FROM openjdk:17-jdk-slim
 
-COPY target/*.jar app.jar
+WORKDIR /app
+
+COPY pom.xml .
+
+RUN ./mvnw dependency:go-offline
+
+COPY . .
+
+RUN ./mvnw clean install -DskipTests
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "target/*.jar"]
