@@ -17,9 +17,9 @@ public class HelloController {
 	}
 	
 	@GetMapping("/data")
-	public Map<String, String> data(){
-		Map<String, String> response = new HashMap<>();
-		response.put("data", "value");
+	public Map<String, Number> data(){
+		Map<String, Number> response = new HashMap<>();
+		response.put("data", 3);
 		return response;
 	}
 
