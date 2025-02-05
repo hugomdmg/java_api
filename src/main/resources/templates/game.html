@@ -6,7 +6,9 @@
   <title>Game</title>
 </head>
 <body>
+<div>
   <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000;"></canvas>
+</div>
 
   <script>
   
@@ -230,9 +232,9 @@
         		x:this.position.x,
         		y:this.position.y,
         		z:this.position.z,
-        		vx:this.velocity.vx + this.direction.x*4,
-        		vy:this.velocity.vy + this.direction.y*4,
-        		vz:this.velocity.vz + this.direction.z*4
+        		vx:this.velocity.vx + this.direction.x*8,
+        		vy:this.velocity.vy + this.direction.y*8,
+        		vz:this.velocity.vz + this.direction.z*8
         	})
         	if(this.shots.length > 10){
         		this.shots.shift()
@@ -261,14 +263,23 @@
         	this.position.x = Math.random()*500
         	this.position.y = Math.random()*500
         	this.position.z = Math.random()*500
-        	this.velocity.vx = Math.random()*0.1
-        	this.velocity.vy = Math.random()*0.1
-        	this.velocity.vz = Math.random()*0.1
+        	this.velocity.vx = Math.random()*2
+        	this.velocity.vy = Math.random()*2
+        	this.velocity.vz = Math.random()*2
         }
         move(){
         	this.position.x += this.velocity.vx
         	this.position.y += this.velocity.vy
         	this.position.z += this.velocity.vz
+        	this.velocity.vx = this.changeDirection(this.position.x, this.velocity.vx)
+        	this.velocity.vy = this.changeDirection(this.position.y, this.velocity.vy)
+        	this.velocity.vz = this.changeDirection(this.position.z, this.velocity.vz)
+
+        }
+        
+        changeDirection(p, v){
+        	if(p > 700 || p < -700){ return -v }
+        	return v
         }
         
     }
@@ -309,7 +320,7 @@
     
     function drawAsteroids(){
     	for(let i = 0; i<asteroids.length-1; i++) {
-    		drawSphere(asteroids[i].position.x, asteroids[i].position.y, 4)	
+    		drawSphere(asteroids[i].position.x, asteroids[i].position.y, 5+1)	
     		
     	}
     }
