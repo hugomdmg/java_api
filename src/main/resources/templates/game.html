@@ -320,7 +320,7 @@
     
     function drawAsteroids(){
     	for(let i = 0; i<asteroids.length-1; i++) {
-    		drawSphere(asteroids[i].position.x, asteroids[i].position.y, 5+1)	
+    		drawSphere(asteroids[i].position.x, asteroids[i].position.y, 5+0.01*asteroids[i].position.y)	
     		
     	}
     }
@@ -331,7 +331,18 @@
     	drawShip()
     });
     
-    let x=10, y=10
+    function detectCollision(shots, asteroids){
+    	const dinamics = new Dinamics()
+    	shots.forEach(shot => {
+    		asteroids.forEach((asteroid, index)=> {
+    			if(dinamics.distance(shot, asteroid.position) < 200){
+    				asteroids.splice(index, 1)
+    			}
+    		})
+    	})
+    	return asteroids
+    }
+    
     function animate(){
     	ctx.clearRect(0, 0, canvas.width, canvas.height);
     	drawShip()
@@ -343,6 +354,7 @@
     	asteroids.forEach(asteroid => {
     		asteroid.move()
     	})
+    	asteroids = detectCollision(ship.shots, asteroids)
     	requestAnimationFrame(animate)
     }
     
